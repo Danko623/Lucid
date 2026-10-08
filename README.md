@@ -1,2 +1,2 @@
-# Lucid
- 3D Low-Poly Videogame
+# DEVELOPMENT of Lucid
+This place serves for uploading working concepts of the game.
