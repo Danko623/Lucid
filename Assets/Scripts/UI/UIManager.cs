@@ -1,3 +1,4 @@
+using Quest;
 using TMPro;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ namespace UI
                 return;
             }
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         private void Update()
         {
@@ -44,7 +46,7 @@ namespace UI
         
         public void HideDialog()
         {
-            if (dialogLineText) dialogLineText.text = "";
+            if (dialogLineText) dialogLineText.text = string.Empty;
         }
 
         public void ShowNotification(string text)
@@ -59,23 +61,23 @@ namespace UI
         private void HideNotification()
         {
             _isShowingNotification = false;
-            if (notificationText) notificationText.text = "";
+            if (notificationText) notificationText.text = string.Empty;
         }
         
-        public void UpdateQuestUI(string title, string description)
+        public void UpdateQuestUI(QuestData quest)
         {
-            if (questText)
-            {
-                questText.text = $"<b>{title}</b>\n{description}";
-            }
+            if (quest == null) return;
+            
+            if (questText) questText.text = $"<b>{quest.questName}</b>\n{quest.questDescription}";
         }
-
+        
         public void ClearQuestUI()
         {
-            if (questText)
+            if (questText != null)
             {
-                questText.text = "";
+                questText.text = string.Empty;
             }
         }
+        
     }
 }
