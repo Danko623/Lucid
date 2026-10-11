@@ -2204,6 +2204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Quest.QuestManager
   questSequence:
+  - {fileID: 11400000, guid: b243638e899b351218e1c39f12ec13fd, type: 2}
   - {fileID: 11400000, guid: ee818a9dead55bedcbc9b45016ca7c90, type: 2}
   - {fileID: 11400000, guid: 1e975e43a5e0d30f6948e73639addfc0, type: 2}
   - {fileID: 11400000, guid: e7820acb8c478fab288f16348226951e, type: 2}
