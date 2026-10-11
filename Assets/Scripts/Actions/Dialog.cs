@@ -27,9 +27,9 @@ namespace Actions
         { 
             if (!_npcData) return; 
             
-            QuestManager questManager = FindAnyObjectByType<QuestManager>(); 
-            
-            bool hasQuest = !string.IsNullOrEmpty(_npcData.QuestID); 
+            QuestManager questManager = QuestManager.Instance;
+
+            bool hasQuest = _npcData.QuestData;
             
             if (hasQuest && !questManager) return;
              
@@ -42,8 +42,11 @@ namespace Actions
               }
               else 
               { 
-                  bool questCompleted = 
-                      questManager.IsQuestCompleted(_npcData.QuestID);
+                  QuestData thankYouQuest = _npcData.ThankYouQuestData;
+
+                  string thankYouQuestID = thankYouQuest ? thankYouQuest.questID : _npcData.QuestData.questID;
+                  
+                  bool questCompleted =  questManager.IsQuestCompleted(thankYouQuestID);
                   
                   if (questCompleted) 
                   { 
@@ -65,6 +68,12 @@ namespace Actions
                       _activeDialogLines = _npcData.ReminderDialogLines;
                       
                       _activeDialogType = 1; 
+                  }
+                  else if (!questManager.CanStartQuest(_npcData.QuestData.questID))
+                  {
+                      _activeDialogLines = _npcData.UnavailableDialogLines;
+                      
+                      _activeDialogType = 4;
                   }
                   else
                   { 
@@ -100,12 +109,22 @@ namespace Actions
         {
             if (_activeDialogType == 0 && questManager)
             {
-                questManager.StartQuest(_npcData.QuestID);
-                _hasStartedQuest = true;
+                bool questStarted = questManager.StartQuest(_npcData.QuestData.questID);
+                if (questStarted)
+                {
+                    _hasStartedQuest = true;
+                }
             }
-            else if (_activeDialogType == 2)
+            else if (_activeDialogType == 2 && questManager)
             {
-                _hasThankedPlayer = true;
+                QuestData questToClose = _npcData.ThankYouQuestData ? _npcData.ThankYouQuestData : _npcData.QuestData;
+                
+                bool questClosed =  questManager.CloseQuest(questToClose.questID);
+
+                if (questClosed)
+                {
+                    _hasThankedPlayer = true;
+                }
             }
             
             _currentDialogLine = 0;

@@ -6,6 +6,8 @@ namespace UI
 {
     public class UIManager : MonoBehaviour
     {
+        public static UIManager Instance { get; private set; }
+        
         [Header("UI Manager Settings")]
         [SerializeField] private TMP_Text notificationText; 
         [SerializeField] private TMP_Text questText;
@@ -14,7 +16,6 @@ namespace UI
         
         private float _notificationTimer;
         private bool _isShowingNotification;
-        public static UIManager Instance { get; private set; }
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -22,6 +23,7 @@ namespace UI
                 Destroy(gameObject);
                 return;
             }
+            
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }

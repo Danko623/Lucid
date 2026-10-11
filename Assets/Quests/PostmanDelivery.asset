@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b3fbe447a424afc86f90e571f36f934, type: 3}
-  m_Name: Postman
+  m_Name: PostmanDelivery
   m_EditorClassIdentifier: Assembly-CSharp::Quest.QuestData
-  questID: postman
-  questName: "Po\u0161t\xE1r"
-  questDescription: "Doru\u010D bal\xEDk jeho pr\xEDjemcovi."
+  questID: postman_delivery
+  questName: "Doru\u010D bal\xEDk"
+  questDescription: "Odnes bal\xEDk spr\xE1vnemu pr\xEDjemcovi."
   state: 0

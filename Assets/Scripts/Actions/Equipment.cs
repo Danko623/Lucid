@@ -1,15 +1,23 @@
 using Interfaces;
+using Quest;
 using UnityEngine; 
  using UnityEngine.InputSystem;
+ using UnityEngine.Serialization;
 
-namespace Actions
+ namespace Actions
 {
     public class Equipment : MonoBehaviour, IInteractable
     {
+        [Header("Quest Settings")]
+        [SerializeField] private QuestData requiredQuest;
+        [SerializeField] private QuestData nextQuest;
+        
         [SerializeField] GameObject parent;
-        private bool _isEquipped;
         private Rigidbody _rigidbody;
         private Collider _collider;
+        private bool _isEquipped;
+        
+        public bool IsEquipped => _isEquipped;
 
         private void Awake()
         {
@@ -20,13 +28,39 @@ namespace Actions
         }
         private void Update()
         {
-            if (Keyboard.current.qKey.wasPressedThisFrame && _isEquipped) 
+            if (Keyboard.current.qKey.wasPressedThisFrame && _isEquipped && !requiredQuest) 
                 Drop();
         }
         public void Interact()
         {
-            if (_isEquipped) Drop();
-            else Equip();
+            if (_isEquipped)
+            {
+                if (!requiredQuest)
+                {
+                    Drop();
+                }
+                return;
+            }
+
+            if (requiredQuest)
+            {
+                QuestManager questManager = QuestManager.Instance;
+                
+                if (!questManager || !questManager.IsQuestActive(requiredQuest.questID)) return;
+            }
+            
+            Equip();
+
+            if (requiredQuest && nextQuest)
+            {
+                QuestManager questManager = QuestManager.Instance;
+                
+                if (questManager.CompleteQuest(requiredQuest.questID))
+                {
+                    questManager.CloseQuest(requiredQuest.questID);
+                    questManager.StartQuest(nextQuest.questID);
+                }
+            }
         }
         private void Equip()
         {
@@ -40,7 +74,7 @@ namespace Actions
             _collider.enabled = false;
         }
 
-        private void Drop()
+        public void Drop()
         {
             enabled = false;
             _isEquipped = false;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DebugTools
+namespace Debug_Tools
 {
     public class DebugDrawing : MonoBehaviour
     {

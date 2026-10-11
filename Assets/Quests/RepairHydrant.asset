@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b3fbe447a424afc86f90e571f36f934, type: 3}
-  m_Name: Firefighter
+  m_Name: RepairHydrant
   m_EditorClassIdentifier: Assembly-CSharp::Quest.QuestData
-  questID: firefighter
-  questName: "Hasi\u010D"
-  questDescription: "Oprav mestsk\xFD hydrant."
+  questID: repair_hydrant
+  questName: Oprav hydrant
+  questDescription: "N\xE1jdi pokazen\xFD hydrant a oprav ho pomocou k\u013E\xFA\u010Da, ktor\xFD si na\u0161iel."
   state: 0

@@ -7,7 +7,10 @@ namespace Actions
     public class HydrantInteraction : MonoBehaviour, IInteractable
     {
         [Header("Quest Settings")]
-        [SerializeField] private string questID = "firefighter";
+        [SerializeField] private QuestData questData;
+        
+        [Header("Required Equipment")]
+        [SerializeField] private Equipment requiredEquipment;
 
         private bool _isRepaired;
         
@@ -15,13 +18,25 @@ namespace Actions
         {
             if (_isRepaired) return;
             
-           QuestManager questManager = FindAnyObjectByType<QuestManager>();
+            if (!questData) return;
+            
+            if (!requiredEquipment) return;
+            
+           QuestManager questManager = QuestManager.Instance;
            
            if (!questManager) return;
+
+           if (!questManager.IsQuestActive(questData.questID)) return;
            
-           bool questCompleted = questManager.CompleteQuest(questID);
+           if (!requiredEquipment.IsEquipped) return;
            
-           if (questCompleted) _isRepaired = true;
+           bool questCompleted = questManager.CompleteQuest(questData.questID);
+           
+           if (questCompleted)
+           {
+               _isRepaired = true;
+               Destroy(requiredEquipment.gameObject);
+           }
         }
     }
 }
