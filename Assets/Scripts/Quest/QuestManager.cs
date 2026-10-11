@@ -71,10 +71,12 @@ namespace Quest
             _currentQuestIndex = questIndex;
             _currentQuestState = QuestState.InProgress;
 
-            if (UIManager.Instance)
+            UIManager uiManager = UIManager.Instance;
+            
+            if (uiManager)
             {
-                UIManager.Instance.UpdateQuestUI(CurrentQuest);
-                UIManager.Instance.ShowNotification($"Nová úloha: {CurrentQuest.questName}");
+               uiManager.UpdateQuestUI(CurrentQuest);
+               uiManager.ShowNotification($"Nová úloha: {CurrentQuest.questName}");
             }
             
             return true;
@@ -89,11 +91,13 @@ namespace Quest
             _currentQuestState = QuestState.Completed;
             _completedQuestIDs.Add(questID);
 
-            if (UIManager.Instance)
+            UIManager uiManager = UIManager.Instance;
+            
+            if (uiManager)
             {
-                UIManager.Instance.ClearQuestUI();
+                uiManager.ClearQuestUI();
                 
-                UIManager.Instance.ShowNotification($"Úloha dokončená:  {CurrentQuest.questName}");
+                uiManager.ShowNotification($"Úloha dokončená:  {CurrentQuest.questName}");
             } 
             
             return true;

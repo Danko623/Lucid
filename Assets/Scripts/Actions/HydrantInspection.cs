@@ -1,5 +1,6 @@
 using Interfaces;
 using Quest;
+using UI;
 using UnityEngine;
 
 namespace Actions
@@ -19,6 +20,40 @@ namespace Actions
         {
             if (_hasBeenInspected) return;
             
+            QuestManager questManager = QuestManager.Instance;
+            
+            if (!questManager) return;
+            if (!inspectionQuest || !findKeyQuest) return;
+            
+            if (!questManager.IsQuestActive(inspectionQuest.questID))
+                return;
+            
+            UIManager uiManager = UIManager.Instance;
+
+            if (isBroken)
+            {
+                bool completed = questManager.CompleteQuest(inspectionQuest.questID);
+
+                if (!completed) return;
+                
+                questManager.CloseQuest(inspectionQuest.questID);
+                
+                _hasBeenInspected = true;
+                
+                questManager.StartQuest(findKeyQuest.questID);
+
+                if (uiManager)
+                {
+                    uiManager.ShowNotification("Našiel si pokazený hydrant!");
+                }
+            }
+            else
+            {
+                if (uiManager)
+                {
+                    uiManager.ShowNotification("Tento hydrant sa zdá byť v poriadku.");
+                }
+            }
         }
     }
 }

@@ -2,8 +2,7 @@ using Interfaces;
 using Quest;
 using UnityEngine; 
  using UnityEngine.InputSystem;
- using UnityEngine.Serialization;
-
+ 
  namespace Actions
 {
     public class Equipment : MonoBehaviour, IInteractable
@@ -33,6 +32,8 @@ using UnityEngine;
         }
         public void Interact()
         {
+            QuestManager questManager = QuestManager.Instance;
+            
             if (_isEquipped)
             {
                 if (!requiredQuest)
@@ -44,8 +45,6 @@ using UnityEngine;
 
             if (requiredQuest)
             {
-                QuestManager questManager = QuestManager.Instance;
-                
                 if (!questManager || !questManager.IsQuestActive(requiredQuest.questID)) return;
             }
             
@@ -53,8 +52,6 @@ using UnityEngine;
 
             if (requiredQuest && nextQuest)
             {
-                QuestManager questManager = QuestManager.Instance;
-                
                 if (questManager.CompleteQuest(requiredQuest.questID))
                 {
                     questManager.CloseQuest(requiredQuest.questID);

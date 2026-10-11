@@ -1,85 +1,85 @@
-using Quest;
-using TMPro;
-using UnityEngine;
+    using Quest;
+    using TMPro;
+    using UnityEngine;
 
-namespace UI
-{
-    public class UIManager : MonoBehaviour
+    namespace UI
     {
-        public static UIManager Instance { get; private set; }
-        
-        [Header("UI Manager Settings")]
-        [SerializeField] private TMP_Text notificationText; 
-        [SerializeField] private TMP_Text questText;
-        [SerializeField] private TMP_Text dialogLineText;
-        [SerializeField] private float textDuration = 3.5f;
-        
-        private float _notificationTimer;
-        private bool _isShowingNotification;
-        private void Awake()
+        public class UIManager : MonoBehaviour
         {
-            if (Instance != null && Instance != this)
+            public static UIManager Instance { get; private set; }
+            
+            [Header("UI Manager Settings")]
+            [SerializeField] private TMP_Text notificationText; 
+            [SerializeField] private TMP_Text questText;
+            [SerializeField] private TMP_Text dialogLineText;
+            [SerializeField] private float textDuration = 3.5f;
+            
+            private float _notificationTimer;
+            private bool _isShowingNotification;
+            private void Awake()
             {
-                Destroy(gameObject);
-                return;
+                if (Instance != null && Instance != this)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+                
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            private void Update()
+            {
+                if (!_isShowingNotification) return;
+
+                _notificationTimer -= Time.deltaTime;
+                if (_notificationTimer <= 0f)
+                {
+                    HideNotification();
+                }
+            }
+
+            public void ShowDialog(string text)
+            {
+                if (!dialogLineText){
+                    return;
+                }
+                dialogLineText.text = text;
             }
             
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        private void Update()
-        {
-            if (!_isShowingNotification) return;
-
-            _notificationTimer -= Time.deltaTime;
-            if (_notificationTimer <= 0f)
+            public void HideDialog()
             {
-                HideNotification();
+                if (dialogLineText) dialogLineText.text = string.Empty;
             }
-        }
 
-        public void ShowDialog(string text)
-        {
-            if (!dialogLineText){
-                return;
-            }
-            dialogLineText.text = text;
-        }
-        
-        public void HideDialog()
-        {
-            if (dialogLineText) dialogLineText.text = string.Empty;
-        }
-
-        public void ShowNotification(string text)
-        {
-            if (!notificationText)return;
-            
-            notificationText.text = text;
-            _notificationTimer = textDuration;
-            _isShowingNotification = true;
-        }
-
-        private void HideNotification()
-        {
-            _isShowingNotification = false;
-            if (notificationText) notificationText.text = string.Empty;
-        }
-        
-        public void UpdateQuestUI(QuestData quest)
-        {
-            if (quest == null) return;
-            
-            if (questText) questText.text = $"<b>{quest.questName}</b>\n{quest.questDescription}";
-        }
-        
-        public void ClearQuestUI()
-        {
-            if (questText != null)
+            public void ShowNotification(string text)
             {
-                questText.text = string.Empty;
+                if (!notificationText)return;
+                
+                notificationText.text = text;
+                _notificationTimer = textDuration;
+                _isShowingNotification = true;
             }
+
+            private void HideNotification()
+            {
+                _isShowingNotification = false;
+                if (notificationText) notificationText.text = string.Empty;
+            }
+            
+            public void UpdateQuestUI(QuestData quest)
+            {
+                if (!quest) return;
+                
+                if (questText) questText.text = $"<b>{quest.questName}</b>\n{quest.questDescription}";
+            }
+            
+            public void ClearQuestUI()
+            {
+                if (questText)
+                {
+                    questText.text = string.Empty;
+                }
+            }
+            
         }
-        
     }
-}

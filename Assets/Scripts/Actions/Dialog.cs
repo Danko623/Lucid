@@ -93,9 +93,11 @@ namespace Actions
             
             if (_currentDialogLine < _activeDialogLines.Count) 
             { 
-                if (UIManager.Instance) 
+                UIManager uiManger = UIManager.Instance;
+                
+                if (uiManger) 
                 {
-                    UIManager.Instance.ShowDialog(_activeDialogLines[_currentDialogLine]); 
+                    uiManger.ShowDialog(_activeDialogLines[_currentDialogLine]); 
                 }
                 
                 _currentDialogLine++; 
@@ -129,7 +131,7 @@ namespace Actions
             
             _currentDialogLine = 0;
             _activeDialogLines = null;
-
+            
             if (UIManager.Instance) UIManager.Instance.HideDialog();
         }
         private void OnTriggerExit(Collider other)
