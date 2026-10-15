@@ -10,6 +10,7 @@ namespace Actions
     public class Dialog : MonoBehaviour, IInteractable
     {
         private NpcData _npcData;
+        private NpcClue _npcClue;
         private int _currentDialogLine;
         
         private bool _hasStartedQuest;
@@ -21,6 +22,7 @@ namespace Actions
         private void Awake()
         {
             _npcData = GetComponent<NpcData>();
+            _npcClue = GetComponent<NpcClue>();
         }
         
         public void Interact()
@@ -37,8 +39,19 @@ namespace Actions
             {
               if (!hasQuest)
               {
-                _activeDialogLines = _npcData.InitialDialogLines;
-                _activeDialogType = -1; 
+                  if (_npcClue)
+                  {
+                      if (_npcClue.CanGiveClue())
+                      {
+                          _activeDialogLines = _npcData.InitialDialogLines;
+                          _activeDialogType = -1;
+                      }
+                      else
+                      {
+                          _activeDialogLines = _npcData.RepeatDialogLines;
+                          _activeDialogType = 3;
+                      }
+                  }
               }
               else 
               { 
@@ -128,6 +141,9 @@ namespace Actions
                     _hasThankedPlayer = true;
                 }
             }
+
+            if ((_activeDialogType == -1) && _npcClue)
+                _npcClue.GiveClue();
             
             _currentDialogLine = 0;
             _activeDialogLines = null;

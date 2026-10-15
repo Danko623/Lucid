@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PostmanPickup
   m_EditorClassIdentifier: Assembly-CSharp::Quest.QuestData
   questID: postman_pickup
-  questName: "Vyzdvihni bal\xEDk"
-  questDescription: "Doru\u010D bal\xEDk jeho pr\xEDjemcovi."
+  questName: "Zisti adresu bal\xEDka"
+  questDescription: "Z\xE1jdi do mesta a pop\xFDtaj sa miestnych na adresu nezn\xE1meho pr\xEDjemcu."
   state: 0
