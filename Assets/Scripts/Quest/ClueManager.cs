@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Quest
 {
@@ -43,7 +42,7 @@ namespace Quest
                 
                 QuestManager questManager = QuestManager.Instance;
 
-                if (questManager && questToGive)
+                if (questManager && questToGive && questToComplete)
                 {
                     if (questManager.CompleteQuest(questToComplete.questID))
                     {
@@ -63,7 +62,7 @@ namespace Quest
             return _collectedCluesID.Contains(clueID);
         }
 
-        public bool HasAllClues(List<string> clueIDs)
+        private bool HasAllClues(List<string> clueIDs)
         {
             if (clueIDs == null || clueIDs.Count == 0) return false;
 

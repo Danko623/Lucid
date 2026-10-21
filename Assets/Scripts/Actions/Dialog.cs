@@ -11,18 +11,21 @@ namespace Actions
     {
         private NpcData _npcData;
         private NpcClue _npcClue;
+        private PackageReceiver _packageReceiver;
         private int _currentDialogLine;
         
+        private bool _hasHadNormalDialog;
         private bool _hasStartedQuest;
         private bool _hasThankedPlayer;
         
         private List<string> _activeDialogLines;
-        private int _activeDialogType;
+        private DialogType _activeDialogType;
         
         private void Awake()
         {
             _npcData = GetComponent<NpcData>();
             _npcClue = GetComponent<NpcClue>();
+            _packageReceiver = GetComponent<PackageReceiver>();
         }
         
         public void Interact()
@@ -37,71 +40,93 @@ namespace Actions
              
             if (_activeDialogLines == null)
             {
-              if (!hasQuest)
-              {
-                  if (_npcClue)
-                  {
-                      if (_npcClue.CanGiveClue())
-                      {
-                          _activeDialogLines = _npcData.InitialDialogLines;
-                          _activeDialogType = -1;
-                      }
-                      else
-                      {
-                          _activeDialogLines = _npcData.RepeatDialogLines;
-                          _activeDialogType = 3;
-                      }
-                  }
-              }
-              else 
-              { 
-                  QuestData thankYouQuest = _npcData.ThankYouQuestData;
+                if (_packageReceiver)
+                {
+                    DialogPackageReceiver(questManager);
+                }
+                else if (Equipment.EquippedItem)
+                {
+                    _activeDialogLines = _npcData.WrongRecipientDialogLines;
+                    _activeDialogType = DialogType.WrongRecipient;
+                }
+                else if (!hasQuest)
+                {
+                    if (_npcClue)
+                    {
+                        if (_npcClue.CanGiveClue())
+                        {
+                            _activeDialogLines = _npcData.InitialDialogLines;
+                            _activeDialogType = DialogType.Clue;
+                        }
+                        else
+                        {
+                            _activeDialogLines = _npcData.RepeatDialogLines;
+                            _activeDialogType = DialogType.Repeat;
+                        }
+                    }
+                    else
+                    {
+                        if (!_hasHadNormalDialog)
+                        {
+                            _activeDialogLines = _npcData.InitialDialogLines;
+                            _activeDialogType = DialogType.Normal;
+                        }
+                        else
+                        {
+                            _activeDialogLines = _npcData.RepeatDialogLines;
+                            _activeDialogType = DialogType.Repeat;
+                        }
+                    }
+                }
+                else 
+                { 
+                    QuestData thankYouQuest = _npcData.ThankYouQuestData;
 
-                  string thankYouQuestID = thankYouQuest ? thankYouQuest.questID : _npcData.QuestData.questID;
+                    string thankYouQuestID = thankYouQuest ? thankYouQuest.questID : _npcData.QuestData.questID;
                   
-                  bool questCompleted =  questManager.IsQuestCompleted(thankYouQuestID);
+                    bool questCompleted =  questManager.IsQuestCompleted(thankYouQuestID);
                   
-                  if (questCompleted) 
-                  { 
-                      if (!_hasThankedPlayer) 
-                      { 
-                          _activeDialogLines = _npcData.ThankYouDialogLines;
+                    if (questCompleted) 
+                    { 
+                        if (!_hasThankedPlayer) 
+                        { 
+                            _activeDialogLines = _npcData.ThankYouDialogLines;
                           
-                          _activeDialogType = 2; 
-                      }
-                      else 
-                      { 
-                          _activeDialogLines = _npcData.RepeatDialogLines;
+                            _activeDialogType = DialogType.ThankYou; 
+                        }
+                        else 
+                        { 
+                            _activeDialogLines = _npcData.RepeatDialogLines;
                           
-                          _activeDialogType = 3; 
-                      } 
-                  }
-                  else if (_hasStartedQuest) 
-                  { 
-                      _activeDialogLines = _npcData.ReminderDialogLines;
+                            _activeDialogType = DialogType.Repeat; 
+                        } 
+                    }
+                    else if (_hasStartedQuest) 
+                    { 
+                        _activeDialogLines = _npcData.ReminderDialogLines;
                       
-                      _activeDialogType = 1; 
-                  }
-                  else if (!questManager.CanStartQuest(_npcData.QuestData.questID))
-                  {
-                      _activeDialogLines = _npcData.UnavailableDialogLines;
+                        _activeDialogType = DialogType.Reminder; 
+                    }
+                    else if (!questManager.CanStartQuest(_npcData.QuestData.questID))
+                    {
+                        _activeDialogLines = _npcData.UnavailableDialogLines;
                       
-                      _activeDialogType = 4;
-                  }
-                  else
-                  { 
-                      _activeDialogLines = _npcData.InitialDialogLines;
+                        _activeDialogType = DialogType.Unavailable;
+                    }
+                    else
+                    { 
+                        _activeDialogLines = _npcData.InitialDialogLines;
                       
-                      _activeDialogType = 0; 
-                  } 
-              }
+                        _activeDialogType = DialogType.QuestStart; 
+                    } 
+                }
               
-              if (_activeDialogLines == null || _activeDialogLines.Count == 0) 
-              { 
-                  _activeDialogLines = null; 
+                if (_activeDialogLines == null || _activeDialogLines.Count == 0) 
+                { 
+                    _activeDialogLines = null; 
                   
-                  return; 
-              } 
+                    return; 
+                } 
             }
             
             if (_currentDialogLine < _activeDialogLines.Count) 
@@ -120,9 +145,50 @@ namespace Actions
                 FinishDialog(questManager); 
             } 
         }
+
+        private void DialogPackageReceiver(QuestManager questManager)
+        {
+            QuestData deliveryQuest = _packageReceiver.DeliveryQuest;
+
+            if (!deliveryQuest || !questManager) return;
+            
+            string questID = deliveryQuest.questID;
+
+            if (questManager.IsQuestCompleted(questID))
+            {
+                _activeDialogLines = _npcData.RepeatDialogLines;
+                _activeDialogType = DialogType.Repeat;
+            }
+            else if (questManager.IsQuestActive(questID))
+            {
+                if (_packageReceiver.HasCorrectPackage)
+                {
+                    _activeDialogLines = _npcData.ThankYouDialogLines;
+                    _activeDialogType = DialogType.ThankYou;
+                }
+                else
+                {
+                    _activeDialogLines = _npcData.ReminderDialogLines;
+                    _activeDialogType = DialogType.Reminder;
+                }
+            }
+            else
+            {
+                if (!_hasHadNormalDialog)
+                {
+                    _activeDialogLines = _npcData.InitialDialogLines;
+                    _activeDialogType = DialogType.Normal;
+                }
+                else
+                {
+                    _activeDialogLines = _npcData.RepeatDialogLines;
+                    _activeDialogType = DialogType.Repeat;
+                }
+            }
+        }
         private void FinishDialog(QuestManager questManager)
         {
-            if (_activeDialogType == 0 && questManager)
+            if (_activeDialogType == DialogType.QuestStart && questManager)
             {
                 bool questStarted = questManager.StartQuest(_npcData.QuestData.questID);
                 if (questStarted)
@@ -130,20 +196,34 @@ namespace Actions
                     _hasStartedQuest = true;
                 }
             }
-            else if (_activeDialogType == 2 && questManager)
+            else if (_activeDialogType == DialogType.ThankYou && questManager)
             {
-                QuestData questToClose = _npcData.ThankYouQuestData ? _npcData.ThankYouQuestData : _npcData.QuestData;
-                
-                bool questClosed =  questManager.CloseQuest(questToClose.questID);
-
-                if (questClosed)
+                if (_packageReceiver)
                 {
-                    _hasThankedPlayer = true;
+                    bool deliveryCompleted = _packageReceiver.CompleteDelivery();
+
+                    if (deliveryCompleted)
+                    {
+                        _hasThankedPlayer = true;
+                    }
+                }
+                else
+                {
+                    QuestData questToClose = _npcData.ThankYouQuestData ? _npcData.ThankYouQuestData : _npcData.QuestData;
+                
+                    bool questClosed =  questManager.CloseQuest(questToClose.questID);
+
+                    if (questClosed)
+                    {
+                        _hasThankedPlayer = true;
+                    }
                 }
             }
 
-            if ((_activeDialogType == -1) && _npcClue)
+            if (_activeDialogType == DialogType.Clue && _npcClue)
                 _npcClue.GiveClue();
+
+            if (_activeDialogType == DialogType.Normal) _hasHadNormalDialog = true;
             
             _currentDialogLine = 0;
             _activeDialogLines = null;
@@ -156,6 +236,18 @@ namespace Actions
             _currentDialogLine = 0;
             _activeDialogLines = null;
             if (UIManager.Instance) UIManager.Instance.HideDialog();
+        }
+        
+        private enum DialogType
+        {
+            Clue,
+            QuestStart,
+            Reminder,
+            ThankYou,
+            Repeat,
+            Unavailable,
+            Normal,
+            WrongRecipient
         }
     }
 }

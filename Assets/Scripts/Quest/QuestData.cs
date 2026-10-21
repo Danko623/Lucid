@@ -10,6 +10,5 @@ namespace Quest
         public string questID;
         public string questName;
         [TextArea] public string questDescription;
-        public QuestState state = QuestState.NotStarted;
     }
 }

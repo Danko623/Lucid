@@ -1,35 +1,39 @@
-using Interfaces;
 using Quest;
 using UnityEngine;
 
 namespace Actions
 {
-    public class PackageReceiver : MonoBehaviour, IInteractable
+    public class PackageReceiver : MonoBehaviour
     {
         [Header("Quest Settings")]
         [SerializeField] private QuestData deliveryQuest;
+        public QuestData DeliveryQuest => deliveryQuest;
         
         [Header("Required Equipment")]
         [SerializeField] private Equipment package;
-        
-        public void Interact()
+        public bool HasCorrectPackage => package && package.IsEquipped;
+
+        public bool CompleteDelivery()
         {
-           if (!package || !deliveryQuest) return;
+            if (!package || !deliveryQuest) return false;
+            
+            if (!package.IsEquipped) return false;
+            
+            QuestManager questManager = QuestManager.Instance;
+            
+            if (!questManager) return false;
+            
+            if (!questManager.IsQuestActive(deliveryQuest.questID)) return false;
+            
+            bool questCompleted = questManager.CompleteQuest(deliveryQuest.questID);
 
-           if (!package.IsEquipped) return;
-           
-           QuestManager questManager = QuestManager.Instance;
-
-           if (!questManager) return;
-           
-           if (!questManager.IsQuestActive(deliveryQuest.questID)) return;
-           
-           bool questCompleted = questManager.CompleteQuest(deliveryQuest.questID);
-
-           if (questCompleted)
-           {
-               Destroy(package.gameObject);
-           }
+            if (questCompleted)
+            {
+                Destroy(package.gameObject);
+                return true;
+            }
+            
+            return false;
         }
     }
 }

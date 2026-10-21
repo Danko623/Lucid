@@ -106,9 +106,7 @@ namespace Quest
         public bool CloseQuest(string questID)
         {
             if (!IsQuestCompleted(questID)) return false;
-            if (_closedQuestIDs.Contains(questID)) return true;
-            
-            _closedQuestIDs.Add(questID);
+            if (!_closedQuestIDs.Add(questID)) return true;
 
             if (UIManager.Instance && _closedQuestIDs.Count >= questSequence.Count)
             {

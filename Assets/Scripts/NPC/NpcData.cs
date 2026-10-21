@@ -16,6 +16,7 @@ namespace NPC
         [SerializeField] private List<string> thankYouDialogLines;
         [SerializeField] private List<string> repeatDialogLines;
         [SerializeField] private List<string> unavailableDialogLines;
+        [SerializeField] private List<string> wrongRecipientDialogLines;
         
         public QuestData QuestData => questData;
         public QuestData  ThankYouQuestData => thankYouQuestData;
@@ -24,5 +25,6 @@ namespace NPC
         public List<string> ThankYouDialogLines => thankYouDialogLines;
         public List<string> RepeatDialogLines => repeatDialogLines;
         public List<string> UnavailableDialogLines => unavailableDialogLines;
+        public List<string> WrongRecipientDialogLines => wrongRecipientDialogLines;
     }
 }    

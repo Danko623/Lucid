@@ -11,12 +11,12 @@ using UnityEngine;
         [SerializeField] private QuestData requiredQuest;
         [SerializeField] private QuestData nextQuest;
         
-        [SerializeField] GameObject parent;
+        [SerializeField] private GameObject parent;
         private Rigidbody _rigidbody;
         private Collider _collider;
         private bool _isEquipped;
-        
         public bool IsEquipped => _isEquipped;
+        public static Equipment EquippedItem { get; private set; }
 
         private void Awake()
         {
@@ -61,6 +61,7 @@ using UnityEngine;
         }
         private void Equip()
         {
+            EquippedItem = this;
             enabled = true;
             _isEquipped = true;
             
@@ -71,8 +72,9 @@ using UnityEngine;
             _collider.enabled = false;
         }
 
-        public void Drop()
+        private void Drop()
         {
+            if (EquippedItem == this) EquippedItem = null;
             enabled = false;
             _isEquipped = false;
             transform.SetParent(null);

@@ -430,7 +430,7 @@ GameObject:
   - component: {fileID: 291937722}
   - component: {fileID: 291937721}
   m_Layer: 6
-  m_Name: Capsule_1
+  m_Name: NPC_clue_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -457,6 +457,8 @@ MonoBehaviour:
   repeatDialogLines:
   - "Ak\xE9 pekn\xE9 po\u010Dasie dnes."
   unavailableDialogLines: []
+  wrongRecipientDialogLines:
+  - "Toto nie je pre m\u0148a"
 --- !u!114 &291937722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,6 +640,7 @@ MonoBehaviour:
   - "Je super by\u0165 viacer\xFDmi \u013Eudmi."
   unavailableDialogLines:
   - "Najprv si dokon\u010Di \xFAlohy kamar\xE1t."
+  wrongRecipientDialogLines: []
 --- !u!136 &354431665
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -799,7 +802,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 913637580}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &379085776
@@ -818,7 +822,7 @@ GameObject:
   - component: {fileID: 379085782}
   - component: {fileID: 379085781}
   m_Layer: 6
-  m_Name: Capsule
+  m_Name: NPC_clue_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -940,6 +944,8 @@ MonoBehaviour:
   repeatDialogLines:
   - "Ak\xFD pekn\xFD de\u0148 dnes."
   unavailableDialogLines: []
+  wrongRecipientDialogLines:
+  - "Toto nie je pre m\u0148a"
 --- !u!114 &379085782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1526,6 +1532,157 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 722580943}
   m_CullTransparentMesh: 1
+--- !u!1 &913637579
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 913637580}
+  - component: {fileID: 913637585}
+  - component: {fileID: 913637584}
+  - component: {fileID: 913637583}
+  - component: {fileID: 913637582}
+  - component: {fileID: 913637581}
+  m_Layer: 6
+  m_Name: NPC_normal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &913637580
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913637579}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -12.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 375813593}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &913637581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913637579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c75584a52113431a9e3e6b2d45e143c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPC.NpcData
+  questData: {fileID: 0}
+  thankYouQuestData: {fileID: 0}
+  initialDialogLines:
+  - "Ak\xFD pekn\xFD de\u0148 dnes je."
+  reminderDialogLines: []
+  thankYouDialogLines: []
+  repeatDialogLines:
+  - "Cho\u010F domov u\u017E rad\u0161ej."
+  unavailableDialogLines: []
+  wrongRecipientDialogLines:
+  - "Tento bal\xEDk nie je pre m\u0148a."
+--- !u!114 &913637582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913637579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c871b8a20dd45b1ae48ec560611b1ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Actions.Dialog
+--- !u!136 &913637583
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913637579}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &913637584
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913637579}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &913637585
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913637579}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &930879402
 GameObject:
   m_ObjectHideFlags: 0
@@ -2207,6 +2364,7 @@ MonoBehaviour:
   - "D\xFAfam, \u017Ee n\xE1m dnes u\u017E ni\u010D neskomplikuje slu\u017Ebu."
   unavailableDialogLines:
   - "Dokon\u010Di najprv svoju aktu\xE1lnu \xFAlohu a potom sa porozpr\xE1vame."
+  wrongRecipientDialogLines: []
 --- !u!114 &1284282296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2253,6 +2411,8 @@ GameObject:
   - component: {fileID: 1409585130}
   - component: {fileID: 1409585129}
   - component: {fileID: 1409585133}
+  - component: {fileID: 1409585135}
+  - component: {fileID: 1409585134}
   m_Layer: 6
   m_Name: NPC_postamn_delivery
   m_TagString: Untagged
@@ -2369,6 +2529,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Actions.PackageReceiver
   deliveryQuest: {fileID: 11400000, guid: 987f80df3bcc0d871b49528a745ee86b, type: 2}
   package: {fileID: 421846581}
+--- !u!114 &1409585134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409585128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c871b8a20dd45b1ae48ec560611b1ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Actions.Dialog
+--- !u!114 &1409585135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409585128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c75584a52113431a9e3e6b2d45e143c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPC.NpcData
+  questData: {fileID: 0}
+  thankYouQuestData: {fileID: 0}
+  initialDialogLines:
+  - Toto je Initial Dialog
+  reminderDialogLines:
+  - Toto je Reminder Dialog
+  thankYouDialogLines:
+  - "Diki moc za bal\xEDk."
+  repeatDialogLines:
+  - Toto je Repeat Dialog
+  unavailableDialogLines: []
+  wrongRecipientDialogLines: []
 --- !u!1 &1814794125
 GameObject:
   m_ObjectHideFlags: 0
@@ -2717,7 +2913,7 @@ GameObject:
   - component: {fileID: 2002175785}
   - component: {fileID: 2002175784}
   m_Layer: 6
-  m_Name: Capsule_2
+  m_Name: NPC_clue_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2744,6 +2940,8 @@ MonoBehaviour:
   repeatDialogLines:
   - "Ak\xFD dobr\xFD vzduch dnes."
   unavailableDialogLines: []
+  wrongRecipientDialogLines:
+  - "Toto nie je pre m\u0148a"
 --- !u!114 &2002175785
 MonoBehaviour:
   m_ObjectHideFlags: 0
